@@ -8,6 +8,7 @@ interface RecipeDisplayProps {
   getRecipe: () => void;
   status: "idle" | "loading" | "error";
   errorMessage: string;
+  recipeSectionRef: React.RefObject<HTMLElement | null>;
 }
 
 const RecipeDisplay = ({
@@ -15,9 +16,10 @@ const RecipeDisplay = ({
   getRecipe,
   status,
   errorMessage,
+  recipeSectionRef,
 }: RecipeDisplayProps): React.JSX.Element => {
   return (
-    <section className="pb-16">
+    <section ref={recipeSectionRef} className="scroll-mt-6 pb-16">
       {status === "error" ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-[#F0D9D4] bg-[#FBF1EF] px-6 py-10 text-center">
           <TriangleAlert className="h-5 w-5 text-[#D93A2B]" strokeWidth={2} />

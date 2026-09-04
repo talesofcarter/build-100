@@ -8,3 +8,8 @@ export interface Recipe {
 }
 
 export type RecipeStatus = "idle" | "loading" | "error";
+
+export interface SavedRecipe extends Recipe {
+  id: string;
+  savedAt: number;
+}

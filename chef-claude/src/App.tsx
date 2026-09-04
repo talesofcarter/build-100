@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Nav from "./components/Nav";
 import InputSection from "./components/InputSection";
 import IngredientsList from "./components/IngredientsList";
 import RecipeDisplay from "./components/RecipeDisplay";
 import Footer from "./components/Footer";
 import { API_URL, MODEL_ID, SYSTEM_PROMPT } from "./lib/llm";
-import type { Recipe, RecipeStatus } from "./types";
+import type { SavedRecipe, Recipe, RecipeStatus } from "./types";
+import loadSavedRecipes, { STORAGE_KEY } from "./lib/loadSavedRecipes";
+import SavedRecipes from "./components/SavedRecipes";
 
 const HF_TOKEN = import.meta.env.VITE_HF_TOKEN as string | undefined;
 
@@ -15,12 +17,25 @@ function App(): React.JSX.Element {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [status, setStatus] = useState<RecipeStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [savedRecipes, setSavedRecipes] =
+    useState<SavedRecipe[]>(loadSavedRecipes);
+
+  const recipeSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (recipe && status === "idle") {
+      recipeSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [recipe, status]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     try {
-      if (!ingredientInput) {
+      if (!ingredientInput.trim()) {
         return;
       }
 
@@ -89,12 +104,40 @@ function App(): React.JSX.Element {
 
       setRecipe(nextRecipe);
       setStatus("idle");
+
+      const withMeta: SavedRecipe = {
+        ...nextRecipe,
+        id:
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : `${Date.now()}`,
+        savedAt: Date.now(),
+      };
+
+      setSavedRecipes((prev) => {
+        const next = [withMeta, ...prev];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        return next;
+      });
     } catch (error) {
       setStatus("error");
       setErrorMessage(
         error instanceof Error ? error.message : "An unknown error occurred.",
       );
     }
+  };
+
+  const handleSelectSavedRecipe = (saved: SavedRecipe): void => {
+    setRecipe(saved);
+    setStatus("idle");
+  };
+
+  const handleDeleteSavedRecipe = (id: string): void => {
+    setSavedRecipes((prev) => {
+      const next = prev.filter((r) => r.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
   };
 
   useEffect(() => {
@@ -121,7 +164,15 @@ function App(): React.JSX.Element {
           getRecipe={handleGetRecipe}
           status={status}
           errorMessage={errorMessage}
+          recipeSectionRef={recipeSectionRef}
         />
+        {savedRecipes.length > 0 && (
+          <SavedRecipes
+            savedRecipes={savedRecipes}
+            handleSelectSavedRecipe={handleSelectSavedRecipe}
+            handleDeleteSavedRecipe={handleDeleteSavedRecipe}
+          />
+        )}
       </main>
       <Footer />
     </main>
