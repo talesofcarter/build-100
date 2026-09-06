@@ -7,16 +7,43 @@ import { PasswordHistory } from "./components/PasswordHistory";
 import { mockPassword, strengthScore, strengthLabel } from "./data/data";
 import { mockHistory } from "./data/data";
 
-const lowerCharacters = "abcdefghijklmnopqrstuvwxyz";
-const upperCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const numbers = "0123456789";
-const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+const charPool = {
+  lower: "abcdefghijklmnopqrstuvwxyz",
+  upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  numbers: "0123456789",
+  symbols: "!@#$%^&*()_+-=[]{}|;:,.<>?",
+};
 
 function App(): React.JSX.Element {
-  const [password, setPassword] = useState<string | null>(null);
-  const [passwordLength, setPasswordLength] = useState<number | null>(null);
-  const [charType, setCharType] = useState<string | null>(null);
-  const [includeSymbols, setIncludeSymbols] = useState<boolean | null>(null);
+  const [password, setPassword] = useState<string | null>("");
+  const [passwordLength, setPasswordLength] = useState<number>(18);
+  const [charType, setCharType] = useState<string | null>("alphanumeric");
+  const [includeSymbols, setIncludeSymbols] = useState<boolean | null>(true);
+
+  const generateRandomPassword = () => {
+    let pool = "";
+
+    if (charType === "number") {
+      pool = charPool.numbers;
+    } else if (charType === "alphabets") {
+      pool = charPool.lower + charPool.upper;
+    } else if (charType === "alphanumeric") {
+      pool = charPool.lower + charPool.upper + charPool.numbers;
+    }
+
+    if (includeSymbols) {
+      pool += charPool.symbols;
+    }
+
+    let generatedPassword = "";
+
+    for (let i = 0; i < passwordLength; i++) {
+      const randomIdx = Math.floor(Math.random() * pool.length);
+      generatedPassword += pool[randomIdx];
+    }
+
+    setPassword(generatedPassword);
+  };
 
   return (
     <main className="min-h-screen bg-[#FAF9F5] p-6">
