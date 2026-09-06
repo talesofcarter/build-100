@@ -8,7 +8,8 @@
 - [Rules](#rules)
 - [Progress](#progress)
 - [Projects](#projects)
-  - [Day 001 — Chef Claude](#day-001--chef-claude)
+  - [Day 001 - Chef Claude](#day-001--chef-claude)
+  - [Day 002 - Password Generator](--password-generator)
 - [Tech Stack](#tech-stack)
 - [Running a Project Locally](#running-a-project-locally)
 
@@ -31,11 +32,11 @@ Each project lives in its own folder, is small enough to finish in a day, and sh
 
 ## Progress
 
-| Status | Count |
-|---|---|
-| ✅ Completed | 1 / 100 |
-| 🚧 In progress | 0 |
-| ⏳ Remaining | 99 |
+| Status         | Count   |
+| -------------- | ------- |
+| ✅ Completed   | 1 / 100 |
+| 🚧 In progress | 1       |
+| ⏳ Remaining   | 99      |
 
 ## Projects
 
