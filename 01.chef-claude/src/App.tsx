@@ -3,11 +3,11 @@ import Nav from "./components/Nav";
 import InputSection from "./components/InputSection";
 import IngredientsList from "./components/IngredientsList";
 import RecipeDisplay from "./components/RecipeDisplay";
+import SavedRecipes from "./components/SavedRecipes";
 import Footer from "./components/Footer";
 import { API_URL, MODEL_ID, SYSTEM_PROMPT } from "./lib/llm";
 import type { SavedRecipe, Recipe, RecipeStatus } from "./types";
 import loadSavedRecipes, { STORAGE_KEY } from "./lib/loadSavedRecipes";
-import SavedRecipes from "./components/SavedRecipes";
 
 const HF_TOKEN = import.meta.env.VITE_HF_TOKEN as string | undefined;
 
@@ -153,12 +153,14 @@ function App(): React.JSX.Element {
           setIngredientInput={setIngredientInput}
           handleSubmit={handleSubmit}
         />
+
         <IngredientsList
           ingredients={ingredients}
           removeIngredient={removeIngredient}
           getRecipe={handleGetRecipe}
           status={status}
         />
+
         <RecipeDisplay
           recipe={recipe}
           getRecipe={handleGetRecipe}
@@ -166,6 +168,7 @@ function App(): React.JSX.Element {
           errorMessage={errorMessage}
           recipeSectionRef={recipeSectionRef}
         />
+
         {savedRecipes.length > 0 && (
           <SavedRecipes
             savedRecipes={savedRecipes}
