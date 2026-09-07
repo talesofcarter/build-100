@@ -2,12 +2,14 @@ import React from "react";
 
 interface LengthControlProps {
   length: number;
+  onLengthChange: React.Dispatch<React.SetStateAction<number>>;
   min?: number;
   max?: number;
 }
 
 export function LengthControl({
   length,
+  onLengthChange,
   min = 8,
   max = 32,
 }: LengthControlProps): React.JSX.Element {
@@ -25,7 +27,8 @@ export function LengthControl({
         type="range"
         min={min}
         max={max}
-        defaultValue={length}
+        onChange={(e) => onLengthChange(parseInt(e.target.value))}
+        value={length}
         style={{
           background: `linear-gradient(to right, #D97757 ${percent}%, #EDEAE1 ${percent}%)`,
         }}

@@ -15,12 +15,12 @@ const charPool = {
 };
 
 function App(): React.JSX.Element {
-  const [password, setPassword] = useState<string | null>("");
+  const [password, setPassword] = useState<string>("");
   const [passwordLength, setPasswordLength] = useState<number>(18);
   const [charType, setCharType] = useState<string | null>("alphanumeric");
   const [includeSymbols, setIncludeSymbols] = useState<boolean | null>(true);
 
-  const generateRandomPassword = () => {
+  const generateRandomPassword = (): void => {
     let pool = "";
 
     if (charType === "number") {
@@ -53,12 +53,14 @@ function App(): React.JSX.Element {
           <div className="px-8 py-7">
             <Header />
             <PasswordDisplay
-              password={mockPassword}
+              password={password}
               strengthScore={strengthScore}
               strengthLabel={strengthLabel}
             />
             <ConfigurationPanel
-              length={18}
+              onGenerate={generateRandomPassword}
+              length={passwordLength}
+              onLengthChange={setPasswordLength}
               activeType="alphanumeric"
               symbolsOn={true}
             />
