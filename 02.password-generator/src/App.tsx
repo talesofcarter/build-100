@@ -19,7 +19,7 @@ function App(): React.JSX.Element {
   const [password, setPassword] = useState<string>("");
   const [passwordLength, setPasswordLength] = useState<number>(18);
   const [charType, setCharType] = useState<CharacterType>("letters");
-  const [includeSymbols, setIncludeSymbols] = useState<boolean | null>(true);
+  const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
 
   const generateRandomPassword = (): void => {
     let pool = "";
@@ -64,7 +64,8 @@ function App(): React.JSX.Element {
               onLengthChange={setPasswordLength}
               activeType={charType}
               setCharType={setCharType}
-              symbolsOn={true}
+              symbolsOn={includeSymbols}
+              setIncludeSymbols={setIncludeSymbols}
             />
           </div>
           <div className="border-t border-[#EDEAE1] bg-[#FBFAF7] px-7 py-7 md:border-l md:border-t-0">

@@ -2,10 +2,12 @@ import React from "react";
 
 interface SymbolToggleProps {
   checked: boolean;
+  onChangeSymbols: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function SymbolToggle({
   checked,
+  onChangeSymbols,
 }: SymbolToggleProps): React.JSX.Element {
   return (
     <div className="flex items-center justify-between gap-4 px-5 py-4">
@@ -16,6 +18,7 @@ export function SymbolToggle({
         </p>
       </div>
       <button
+        onClick={() => onChangeSymbols(!checked)}
         type="button"
         role="switch"
         aria-checked={checked}

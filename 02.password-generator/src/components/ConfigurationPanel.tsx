@@ -12,6 +12,7 @@ interface ConfigurationPanelProps {
   activeType: CharacterType;
   setCharType: React.Dispatch<React.SetStateAction<CharacterType>>;
   symbolsOn: boolean;
+  setIncludeSymbols: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ConfigurationPanel({
@@ -21,13 +22,14 @@ export function ConfigurationPanel({
   activeType,
   setCharType,
   symbolsOn,
+  setIncludeSymbols,
 }: ConfigurationPanelProps): React.JSX.Element {
   return (
     <div>
       <div className="rounded-2xl border border-[#EDEAE1] bg-white">
         <LengthControl length={length} onLengthChange={onLengthChange} />
         <TypeSelector activeValue={activeType} onTypeChange={setCharType} />
-        <SymbolToggle checked={symbolsOn} />
+        <SymbolToggle checked={symbolsOn} onChangeSymbols={setIncludeSymbols} />
       </div>
       <div className="mt-4">
         <GenerateButton onGenerate={onGenerate} />
