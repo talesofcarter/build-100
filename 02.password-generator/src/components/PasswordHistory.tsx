@@ -5,11 +5,13 @@ import type { PasswordHistoryEntry } from "../types";
 interface PasswordHistoryProps {
   entries: PasswordHistoryEntry[];
   onClearHistory: () => void;
+  onCopy: (value: string) => Promise<void>;
 }
 
 export function PasswordHistory({
   entries,
   onClearHistory,
+  onCopy,
 }: PasswordHistoryProps): React.JSX.Element {
   if (entries.length === 0) {
     return (
@@ -47,6 +49,7 @@ export function PasswordHistory({
             <div className="flex shrink-0 items-center gap-2">
               <span className="text-xs text-[#A39C8A]">{entry.createdAt}</span>
               <button
+                onClick={() => onCopy(entry.value)}
                 type="button"
                 aria-label="Copy password"
                 className="flex h-7 w-7 items-center justify-center rounded-md text-[#A39C8A] opacity-0 transition-all hover:bg-[#E5E1D6] hover:text-[#D97757] focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757]/50 group-hover:opacity-100"

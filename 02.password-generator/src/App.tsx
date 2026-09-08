@@ -157,6 +157,7 @@ function App(): React.JSX.Element {
             <PasswordHistory
               entries={passwordHistory}
               onClearHistory={clearHistory}
+              onCopy={copyToClipboard}
             />
           </div>
         </div>
