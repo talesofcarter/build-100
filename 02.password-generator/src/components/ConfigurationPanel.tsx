@@ -10,6 +10,7 @@ interface ConfigurationPanelProps {
   length: number;
   onLengthChange: React.Dispatch<React.SetStateAction<number>>;
   activeType: CharacterType;
+  setCharType: React.Dispatch<React.SetStateAction<CharacterType>>;
   symbolsOn: boolean;
 }
 
@@ -18,13 +19,14 @@ export function ConfigurationPanel({
   length,
   onLengthChange,
   activeType,
+  setCharType,
   symbolsOn,
 }: ConfigurationPanelProps): React.JSX.Element {
   return (
     <div>
       <div className="rounded-2xl border border-[#EDEAE1] bg-white">
         <LengthControl length={length} onLengthChange={onLengthChange} />
-        <TypeSelector activeValue={activeType} />
+        <TypeSelector activeValue={activeType} onTypeChange={setCharType} />
         <SymbolToggle checked={symbolsOn} />
       </div>
       <div className="mt-4">

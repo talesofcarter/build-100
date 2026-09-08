@@ -3,6 +3,7 @@ import type { CharacterType } from "../types";
 
 interface TypeSelectorProps {
   activeValue: CharacterType;
+  onTypeChange: React.Dispatch<React.SetStateAction<CharacterType>>;
 }
 
 const options: { value: CharacterType; label: string }[] = [
@@ -13,6 +14,7 @@ const options: { value: CharacterType; label: string }[] = [
 
 export function TypeSelector({
   activeValue,
+  onTypeChange,
 }: TypeSelectorProps): React.JSX.Element {
   const activeIndex = options.findIndex(
     (option) => option.value === activeValue,
@@ -31,6 +33,7 @@ export function TypeSelector({
         />
         {options.map((option) => (
           <button
+            onClick={() => onTypeChange(option.value)}
             key={option.value}
             type="button"
             className={`relative z-10 flex-1 rounded-full py-1.5 text-sm font-medium ${

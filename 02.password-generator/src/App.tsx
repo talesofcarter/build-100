@@ -4,8 +4,9 @@ import { Header } from "./components/Nav";
 import { PasswordDisplay } from "./components/PasswordDisplay";
 import { ConfigurationPanel } from "./components/ConfigurationPanel";
 import { PasswordHistory } from "./components/PasswordHistory";
-import { mockPassword, strengthScore, strengthLabel } from "./data/data";
+import { strengthScore, strengthLabel } from "./data/data";
 import { mockHistory } from "./data/data";
+import type { CharacterType } from "./types";
 
 const charPool = {
   lower: "abcdefghijklmnopqrstuvwxyz",
@@ -17,15 +18,15 @@ const charPool = {
 function App(): React.JSX.Element {
   const [password, setPassword] = useState<string>("");
   const [passwordLength, setPasswordLength] = useState<number>(18);
-  const [charType, setCharType] = useState<string | null>("alphanumeric");
+  const [charType, setCharType] = useState<CharacterType>("letters");
   const [includeSymbols, setIncludeSymbols] = useState<boolean | null>(true);
 
   const generateRandomPassword = (): void => {
     let pool = "";
 
-    if (charType === "number") {
+    if (charType === "numbers") {
       pool = charPool.numbers;
-    } else if (charType === "alphabets") {
+    } else if (charType === "letters") {
       pool = charPool.lower + charPool.upper;
     } else if (charType === "alphanumeric") {
       pool = charPool.lower + charPool.upper + charPool.numbers;
@@ -61,7 +62,8 @@ function App(): React.JSX.Element {
               onGenerate={generateRandomPassword}
               length={passwordLength}
               onLengthChange={setPasswordLength}
-              activeType="alphanumeric"
+              activeType={charType}
+              setCharType={setCharType}
               symbolsOn={true}
             />
           </div>
