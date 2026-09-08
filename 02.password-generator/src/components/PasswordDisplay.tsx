@@ -1,11 +1,13 @@
 import React from "react";
 import { Copy } from "lucide-react";
+import type { ToastState } from "../types";
 
 interface PasswordDisplayProps {
   password: string;
   strengthScore: number;
   strengthLabel: string;
   onCopy: (value: string) => Promise<void>;
+  onToastMessageChange: React.Dispatch<React.SetStateAction<ToastState>>;
 }
 
 const count = 6;
@@ -14,21 +16,30 @@ export function PasswordDisplay({
   password,
   strengthScore,
   strengthLabel,
+  onToastMessageChange,
   onCopy,
 }: PasswordDisplayProps): React.JSX.Element {
   const handleCopyPassword = (): void => {
-    try {
-      onCopy(password);
-    } catch (error) {
-      console.error("Error:", error);
+    if (!password) {
+      onToastMessageChange({
+        message: "Generate Password first",
+        type: "error",
+      });
+      return;
     }
+
+    onCopy(password);
   };
 
   return (
     <div className="mb-6 rounded-2xl border border-[#EDEAE1] bg-white p-6 shadow-[0_1px_2px_rgba(43,39,30,0.04),0_10px_28px_-14px_rgba(43,39,30,0.22)]">
       <div className="flex items-start justify-between gap-4">
-        <p className="break-all text-[1.4rem] leading-snug tracking-wide text-[#2B271E] sm:text-2xl">
-          {password}
+        <p
+          className={`break-all text-xl leading-snug tracking-wide ${
+            password ? "text-[#2B271E]" : "text-[#A39C8A]"
+          }`}
+        >
+          {password || "Click generate to create a password"}
         </p>
         <button
           onClick={handleCopyPassword}

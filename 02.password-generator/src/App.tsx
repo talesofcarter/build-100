@@ -141,6 +141,7 @@ function App(): React.JSX.Element {
               strengthScore={passwordStrength}
               strengthLabel={passwordStrengthLabel}
               onCopy={copyToClipboard}
+              onToastMessageChange={setToastMessage}
             />
             <ConfigurationPanel
               onGenerate={generateRandomPassword}
