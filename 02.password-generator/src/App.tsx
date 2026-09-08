@@ -102,6 +102,10 @@ function App(): React.JSX.Element {
     setPassswordHistory((prev) => [newEntry, ...prev]);
   };
 
+  const clearHistory = (): void => {
+    setPassswordHistory([]);
+  };
+
   return (
     <main className="min-h-screen bg-[#FAF9F5] p-6">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#E5E1D6] bg-white shadow-[0_1px_2px_rgba(43,39,30,0.04),0_24px_48px_-28px_rgba(43,39,30,0.2)]">
@@ -125,7 +129,10 @@ function App(): React.JSX.Element {
             />
           </div>
           <div className="border-t border-[#EDEAE1] bg-[#FBFAF7] px-7 py-7 md:border-l md:border-t-0">
-            <PasswordHistory entries={passwordHistory} />
+            <PasswordHistory
+              entries={passwordHistory}
+              clearHistory={clearHistory}
+            />
           </div>
         </div>
       </div>
