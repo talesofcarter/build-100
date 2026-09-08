@@ -4,8 +4,7 @@ import { Header } from "./components/Nav";
 import { PasswordDisplay } from "./components/PasswordDisplay";
 import { ConfigurationPanel } from "./components/ConfigurationPanel";
 import { PasswordHistory } from "./components/PasswordHistory";
-import { mockHistory } from "./data/data";
-import type { CharacterType } from "./types";
+import type { CharacterType, PasswordHistoryEntry } from "./types";
 
 const charPool = {
   lower: "abcdefghijklmnopqrstuvwxyz",
@@ -22,6 +21,9 @@ function App(): React.JSX.Element {
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
   const [passwordStrengthLabel, setPasswordStrengthLabel] =
     useState<string>("");
+  const [passwordHistory, setPassswordHistory] = useState<
+    PasswordHistoryEntry[]
+  >([]);
 
   const getPasswordStrength = (password: string): void => {
     const outcomes = {
@@ -90,6 +92,14 @@ function App(): React.JSX.Element {
 
     setPassword(generatedPassword);
     getPasswordStrength(generatedPassword);
+
+    const newEntry = {
+      id: crypto.randomUUID(),
+      value: generatedPassword,
+      createdAt: new Date().toLocaleTimeString(),
+    };
+
+    setPassswordHistory((prev) => [newEntry, ...prev]);
   };
 
   return (
@@ -115,7 +125,7 @@ function App(): React.JSX.Element {
             />
           </div>
           <div className="border-t border-[#EDEAE1] bg-[#FBFAF7] px-7 py-7 md:border-l md:border-t-0">
-            <PasswordHistory entries={mockHistory} />
+            <PasswordHistory entries={passwordHistory} />
           </div>
         </div>
       </div>
