@@ -4,7 +4,6 @@ import { Header } from "./components/Nav";
 import { PasswordDisplay } from "./components/PasswordDisplay";
 import { ConfigurationPanel } from "./components/ConfigurationPanel";
 import { PasswordHistory } from "./components/PasswordHistory";
-import { strengthScore, strengthLabel } from "./data/data";
 import { mockHistory } from "./data/data";
 import type { CharacterType } from "./types";
 
@@ -20,6 +19,52 @@ function App(): React.JSX.Element {
   const [passwordLength, setPasswordLength] = useState<number>(18);
   const [charType, setCharType] = useState<CharacterType>("letters");
   const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
+  const [passwordStrength, setPasswordStrength] = useState<number>(0);
+  const [passwordStrengthLabel, setPasswordStrengthLabel] =
+    useState<string>("");
+
+  const getPasswordStrength = (password: string): void => {
+    const outcomes = {
+      hasLowercase: false,
+      hasUppercase: false,
+      hasNumbers: false,
+      hasSymbols: false,
+    };
+
+    const length = password.length;
+
+    for (let i = 0; i < length; i++) {
+      const character = password[i];
+
+      if (charPool.lower.includes(character)) outcomes.hasLowercase = true;
+      if (charPool.upper.includes(character)) outcomes.hasUppercase = true;
+      if (charPool.numbers.includes(character)) outcomes.hasNumbers = true;
+      if (charPool.symbols.includes(character)) outcomes.hasSymbols = true;
+    }
+
+    let score = 0;
+
+    if (length >= 8) score++;
+    if (length >= 12) score++;
+    if (outcomes.hasLowercase) score++;
+    if (outcomes.hasUppercase) score++;
+    if (outcomes.hasNumbers) score++;
+    if (outcomes.hasSymbols) score++;
+
+    let label: string;
+    if (score <= 2) {
+      label = "Weak";
+    } else if (score <= 4) {
+      label = "Moderate";
+    } else if (score === 5) {
+      label = "Strong";
+    } else {
+      label = "Very Strong";
+    }
+
+    setPasswordStrength(score);
+    setPasswordStrengthLabel(label);
+  };
 
   const generateRandomPassword = (): void => {
     let pool = "";
@@ -44,6 +89,7 @@ function App(): React.JSX.Element {
     }
 
     setPassword(generatedPassword);
+    getPasswordStrength(generatedPassword);
   };
 
   return (
@@ -55,17 +101,17 @@ function App(): React.JSX.Element {
             <Header />
             <PasswordDisplay
               password={password}
-              strengthScore={strengthScore}
-              strengthLabel={strengthLabel}
+              strengthScore={passwordStrength}
+              strengthLabel={passwordStrengthLabel}
             />
             <ConfigurationPanel
               onGenerate={generateRandomPassword}
               length={passwordLength}
               onLengthChange={setPasswordLength}
               activeType={charType}
-              setCharType={setCharType}
+              onTypeChange={setCharType}
               symbolsOn={includeSymbols}
-              setIncludeSymbols={setIncludeSymbols}
+              onSymbolsChange={setIncludeSymbols}
             />
           </div>
           <div className="border-t border-[#EDEAE1] bg-[#FBFAF7] px-7 py-7 md:border-l md:border-t-0">

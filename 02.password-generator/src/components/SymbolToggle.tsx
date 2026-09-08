@@ -18,7 +18,7 @@ export function SymbolToggle({
         </p>
       </div>
       <button
-        onClick={() => onChangeSymbols(!checked)}
+        onClick={() => onChangeSymbols((prev) => !prev)}
         type="button"
         role="switch"
         aria-checked={checked}

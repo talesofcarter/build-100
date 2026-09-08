@@ -3,9 +3,11 @@ import { Copy } from "lucide-react";
 
 interface PasswordDisplayProps {
   password: string;
-  strengthScore: number; // 1 to 4, hardcoded from mock data
+  strengthScore: number;
   strengthLabel: string;
 }
+
+const count = 6;
 
 export function PasswordDisplay({
   password,
@@ -29,11 +31,11 @@ export function PasswordDisplay({
 
       <div className="mt-5 flex items-center gap-3">
         <div className="flex flex-1 gap-1">
-          {[1, 2, 3, 4].map((segment) => (
+          {Array.from({ length: count }, (_, i) => (
             <span
-              key={segment}
+              key={i}
               className={`h-1 flex-1 rounded-full ${
-                segment <= strengthScore ? "bg-[#D97757]" : "bg-[#EDEAE1]"
+                i < strengthScore ? "bg-[#D97757]" : "bg-[#EDEAE1]"
               }`}
             />
           ))}
