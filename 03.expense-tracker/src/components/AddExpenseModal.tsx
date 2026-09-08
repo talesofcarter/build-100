@@ -15,10 +15,13 @@ import {
   Wallet,
   Paperclip,
 } from "lucide-react";
-
 import CategoryChip from "./CategoryChip";
 
-const AddExpenseModal = () => {
+interface AddExpenseModalProps {
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#14171A]/45 backdrop-blur-[2px] font-sans px-4">
       <div className="w-full max-w-120 max-h-[88vh] overflow-y-auto rounded-2xl bg-white border border-[#E3E0D8] shadow-[0_20px_60px_rgba(20,23,26,0.18)]">
@@ -32,7 +35,10 @@ const AddExpenseModal = () => {
               Log a purchase to keep this month's budget accurate.
             </p>
           </div>
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg text-[#9C9885] hover:bg-[#F4F2EC] hover:text-[#4A4740] transition-colors shrink-0">
+          <button
+            onClick={() => onClose(false)}
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[#9C9885] hover:bg-[#F4F2EC] hover:text-[#4A4740] transition-colors shrink-0"
+          >
             <X size={16} />
           </button>
         </div>
