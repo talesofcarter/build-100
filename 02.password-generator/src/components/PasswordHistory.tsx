@@ -19,6 +19,8 @@ export function PasswordHistory({
     );
   }
 
+  const slicedEntries = entries.slice(0, 10);
+
   return (
     <div>
       <div className="mb-2 flex items-center justify-between px-2">
@@ -34,7 +36,7 @@ export function PasswordHistory({
       </div>
 
       <ul className="flex flex-col">
-        {entries.map((entry) => (
+        {slicedEntries.map((entry) => (
           <li
             key={entry.id}
             className="group flex items-center justify-between gap-4 rounded-lg px-3 py-2.5 transition-colors hover:bg-[#F5F3ED]"
