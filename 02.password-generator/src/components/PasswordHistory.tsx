@@ -4,12 +4,12 @@ import type { PasswordHistoryEntry } from "../types";
 
 interface PasswordHistoryProps {
   entries: PasswordHistoryEntry[];
-  clearHistory: () => void;
+  onClearHistory: () => void;
 }
 
 export function PasswordHistory({
   entries,
-  clearHistory,
+  onClearHistory,
 }: PasswordHistoryProps): React.JSX.Element {
   if (entries.length === 0) {
     return (
@@ -26,7 +26,7 @@ export function PasswordHistory({
       <div className="mb-2 flex items-center justify-between px-2">
         <h2 className="text-sm font-medium text-[#2B271E]">Recent</h2>
         <button
-          onClick={clearHistory}
+          onClick={onClearHistory}
           type="button"
           className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-[#A39C8A] transition-colors hover:bg-[#EDEAE1] hover:text-[#D97757] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757]/50"
         >

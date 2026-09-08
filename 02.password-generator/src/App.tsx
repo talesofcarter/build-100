@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { Header } from "./components/Nav";
 import { PasswordDisplay } from "./components/PasswordDisplay";
 import { ConfigurationPanel } from "./components/ConfigurationPanel";
 import { PasswordHistory } from "./components/PasswordHistory";
-import type { CharacterType, PasswordHistoryEntry } from "./types";
+import type { CharacterType, PasswordHistoryEntry, ToastState } from "./types";
+
+import ToastNotification from "./components/ToastNotification";
 
 const charPool = {
   lower: "abcdefghijklmnopqrstuvwxyz",
@@ -24,6 +26,7 @@ function App(): React.JSX.Element {
   const [passwordHistory, setPassswordHistory] = useState<
     PasswordHistoryEntry[]
   >([]);
+  const [toastMessage, setToastMessage] = useState<ToastState>(null);
 
   const getPasswordStrength = (password: string): void => {
     const outcomes = {
@@ -106,6 +109,26 @@ function App(): React.JSX.Element {
     setPassswordHistory([]);
   };
 
+  const copyToClipboard = async (value: string): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setToastMessage({ message: "Copied to clipboard", type: "success" });
+    } catch (error) {
+      console.error("Failed to copy:", error);
+      setToastMessage({ message: "Failed to copy, try again", type: "error" });
+    }
+  };
+
+  useEffect(() => {
+    if (!toastMessage) return;
+
+    const timer = setTimeout(() => {
+      setToastMessage(null);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
+
   return (
     <main className="min-h-screen bg-[#FAF9F5] p-6">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#E5E1D6] bg-white shadow-[0_1px_2px_rgba(43,39,30,0.04),0_24px_48px_-28px_rgba(43,39,30,0.2)]">
@@ -117,6 +140,7 @@ function App(): React.JSX.Element {
               password={password}
               strengthScore={passwordStrength}
               strengthLabel={passwordStrengthLabel}
+              onCopy={copyToClipboard}
             />
             <ConfigurationPanel
               onGenerate={generateRandomPassword}
@@ -131,11 +155,13 @@ function App(): React.JSX.Element {
           <div className="border-t border-[#EDEAE1] bg-[#FBFAF7] px-7 py-7 md:border-l md:border-t-0">
             <PasswordHistory
               entries={passwordHistory}
-              clearHistory={clearHistory}
+              onClearHistory={clearHistory}
             />
           </div>
         </div>
       </div>
+
+      {toastMessage && <ToastNotification toast={toastMessage} />}
     </main>
   );
 }

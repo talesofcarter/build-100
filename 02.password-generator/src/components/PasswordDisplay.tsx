@@ -5,6 +5,7 @@ interface PasswordDisplayProps {
   password: string;
   strengthScore: number;
   strengthLabel: string;
+  onCopy: (value: string) => Promise<void>;
 }
 
 const count = 6;
@@ -13,7 +14,16 @@ export function PasswordDisplay({
   password,
   strengthScore,
   strengthLabel,
+  onCopy,
 }: PasswordDisplayProps): React.JSX.Element {
+  const handleCopyPassword = (): void => {
+    try {
+      onCopy(password);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div className="mb-6 rounded-2xl border border-[#EDEAE1] bg-white p-6 shadow-[0_1px_2px_rgba(43,39,30,0.04),0_10px_28px_-14px_rgba(43,39,30,0.22)]">
       <div className="flex items-start justify-between gap-4">
@@ -21,6 +31,7 @@ export function PasswordDisplay({
           {password}
         </p>
         <button
+          onClick={handleCopyPassword}
           type="button"
           aria-label="Copy password"
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#A39C8A] transition-colors hover:bg-[#F5F2EB] hover:text-[#D97757]"
