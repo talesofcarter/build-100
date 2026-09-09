@@ -1,7 +1,11 @@
 import React from "react";
 import { Plus } from "lucide-react";
 
-const PageHeading = (): React.JSX.Element => {
+interface PageHeadingProps {
+  onOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const PageHeading = ({ onOpen }: PageHeadingProps): React.JSX.Element => {
   return (
     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
       <div>
@@ -12,7 +16,10 @@ const PageHeading = (): React.JSX.Element => {
           Here's where your money went this month.
         </p>
       </div>
-      <button className="inline-flex items-center gap-1.5 rounded-lg bg-[#0053E2] px-4 py-2 text-[13.5px] font-semibold text-white hover:bg-[#0047C4] transition-colors self-start">
+      <button
+        onClick={() => onOpen(true)}
+        className="inline-flex items-center gap-1.5 rounded-lg bg-[#0053E2] px-4 py-2 text-[13.5px] font-semibold text-white hover:bg-[#0047C4] transition-colors self-start"
+      >
         <Plus size={16} strokeWidth={2.5} />
         Add expense
       </button>
