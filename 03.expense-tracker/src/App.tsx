@@ -83,6 +83,7 @@ function App(): React.JSX.Element {
             formData={formData}
             onFormChange={handleFormChange}
             onFormSubmit={handleFormSubmit}
+            onFormReset={resetForm}
           />
         )}
         <main className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">

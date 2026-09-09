@@ -26,6 +26,7 @@ interface AddExpenseModalProps {
     value: string | number | boolean,
   ) => void;
   onFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onFormReset: () => void;
 }
 
 const AddExpenseModal = ({
@@ -33,6 +34,7 @@ const AddExpenseModal = ({
   formData,
   onFormChange,
   onFormSubmit,
+  onFormReset,
 }: AddExpenseModalProps) => {
   const {
     amount,
@@ -43,6 +45,11 @@ const AddExpenseModal = ({
     category,
     notes,
   } = formData;
+
+  const handleFormReset = () => {
+    onFormReset();
+    onClose(false);
+  };
 
   return (
     <div
@@ -89,6 +96,7 @@ const AddExpenseModal = ({
                   onChange={(e) =>
                     onFormChange("amount", Number(e.target.value))
                   }
+                  required
                   className="flex-1 bg-transparent text-[22px] font-mono font-semibold outline-none min-w-0"
                 />
                 <span className="text-[12px] font-mono text-[#9C9885]">
@@ -105,6 +113,7 @@ const AddExpenseModal = ({
               <input
                 value={merchant}
                 onChange={(e) => onFormChange("merchant", e.target.value)}
+                required
                 placeholder="Where did you spend?"
                 className="w-full rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-[13.5px] font-medium outline-none focus:border-[#0053E2] focus:ring-1 focus:ring-[#0053E2] placeholder:text-[#9C9885] placeholder:font-normal"
               />
@@ -122,6 +131,7 @@ const AddExpenseModal = ({
                     value={date}
                     type="date"
                     onChange={(e) => onFormChange("date", e.target.value)}
+                    required
                     className="flex-1 bg-transparent text-[13px] font-medium outline-none min-w-0"
                   />
                 </div>
@@ -316,16 +326,23 @@ const AddExpenseModal = ({
 
         {/* Footer */}
         <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 px-6 sm:px-8 py-4 border-t border-[#E3E0D8] bg-[#FAF9F5]">
-          <button className="text-[13px] font-medium text-[#8A8778] hover:text-[#4A4740] sm:text-left text-center">
+          <button
+            type="button"
+            onClick={handleFormReset}
+            className="text-[13px] font-medium text-[#8A8778] hover:text-[#4A4740] sm:text-left text-center"
+          >
             Delete draft
           </button>
+
           <div className="flex items-center gap-2.5">
             <button
+              type="button"
               onClick={() => onClose(false)}
               className="flex-1 sm:flex-initial rounded-lg border border-[#E3E0D8] bg-white px-4 py-2 text-[13.5px] font-medium text-[#4A4740] hover:bg-[#F4F2EC] transition-colors"
             >
               Cancel
             </button>
+
             <button
               type="submit"
               className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#0053E2] px-4 py-2 text-[13.5px] font-semibold text-white hover:bg-[#0047C4] transition-colors"
