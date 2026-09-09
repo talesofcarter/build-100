@@ -9,15 +9,42 @@ import Sidebar from "./components/Sidebar";
 import StatcardSection from "./components/StatcardSection";
 import Topbar from "./components/Topbar";
 import AddExpenseModal from "./components/AddExpenseModal";
+import type { FormDataType } from "./types";
 
 function App(): React.JSX.Element {
+  const [formData, setFormData] = useState<FormDataType>({
+    amount: 0,
+    merchant: "",
+    date: "",
+    paymentMethod: "",
+    isRecurring: false,
+    category: "",
+    notes: "",
+  });
   const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const handleFormChange = (
+    field: keyof FormDataType,
+    value: string | number | boolean,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   return (
     <main className="flex h-screen w-full bg-[#FBFAF7] text-[#14171A] font-sans antialiased">
       <Sidebar onOpen={setOpenModal} />
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <Topbar />
-        {openModal && <AddExpenseModal onClose={setOpenModal} />}
+        {openModal && (
+          <AddExpenseModal
+            onClose={setOpenModal}
+            formData={formData}
+            onFormChange={handleFormChange}
+          />
+        )}
         <main className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">
           <PageHeading onOpen={setOpenModal} />
           <MembershipCardHero />

@@ -11,6 +11,6 @@ body {
 
 button,
 select,
-input {
+input, option {
   cursor: pointer;
 }

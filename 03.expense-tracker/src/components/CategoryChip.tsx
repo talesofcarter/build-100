@@ -6,6 +6,7 @@ interface CategoryChipProps {
   color: string;
   bg: string;
   active?: boolean;
+  onClick: () => void;
 }
 
 const CategoryChip = ({
@@ -14,9 +15,12 @@ const CategoryChip = ({
   color,
   bg,
   active,
+  onClick,
 }: CategoryChipProps) => {
   return (
     <button
+      type="button"
+      onClick={onClick}
       className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border px-2 py-2.5 transition-colors ${
         active
           ? "border-transparent ring-2"

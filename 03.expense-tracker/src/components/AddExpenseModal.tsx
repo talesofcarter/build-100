@@ -16,20 +16,45 @@ import {
   Paperclip,
 } from "lucide-react";
 import CategoryChip from "./CategoryChip";
+import type { FormDataType } from "../types";
 
 interface AddExpenseModalProps {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  formData: FormDataType;
+  onFormChange: (
+    field: keyof FormDataType,
+    value: string | number | boolean,
+  ) => void;
 }
 
-const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
+const AddExpenseModal = ({
+  onClose,
+  formData,
+  onFormChange,
+}: AddExpenseModalProps) => {
+  const {
+    amount,
+    merchant,
+    date,
+    paymentMethod,
+    isRecurring,
+    category,
+    notes,
+  } = formData;
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+  };
+
   return (
     <div
       onClick={() => onClose(false)}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#14171A]/45 backdrop-blur-[2px] font-sans px-4 py-6"
     >
-      <div
+      <form
+        onSubmit={handleSubmit}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[920px] max-h-[94vh] overflow-y-auto rounded-2xl bg-white border border-[#E3E0D8] shadow-[0_20px_60px_rgba(20,23,26,0.18)]"
+        className="w-full max-w-230 max-h-[94vh] overflow-y-auto rounded-2xl bg-white border border-[#E3E0D8] shadow-[0_20px_60px_rgba(20,23,26,0.18)]"
       >
         {/* Header */}
         <div className="flex items-start justify-between px-6 sm:px-8 pt-5 pb-4 border-b border-[#E3E0D8]">
@@ -57,12 +82,15 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
               <label className="block text-[12px] font-medium text-[#4A4740] mb-1.5">
                 Amount
               </label>
-              <div className="flex items-center gap-1.5 rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-4 py-3 focus-within:border-[#0053E2] focus-within:ring-2 focus-within:ring-[#0053E2]/15">
+              <div className="flex items-center gap-1.5 rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-4 py-3 focus-within:border-[#0053E2] focus-within:ring-1 focus-within:ring-[#0053E2]">
                 <span className="text-[22px] font-mono font-semibold text-[#9C9885]">
                   $
                 </span>
                 <input
-                  defaultValue="13.87"
+                  value={amount}
+                  onChange={(e) =>
+                    onFormChange("amount", Number(e.target.value))
+                  }
                   className="flex-1 bg-transparent text-[22px] font-mono font-semibold outline-none min-w-0"
                 />
                 <span className="text-[12px] font-mono text-[#9C9885]">
@@ -77,9 +105,10 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                 Merchant
               </label>
               <input
-                defaultValue="Chipotle Mexican Grill"
+                value={merchant}
+                onChange={(e) => onFormChange("merchant", e.target.value)}
                 placeholder="Where did you spend?"
-                className="w-full rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-[13.5px] font-medium outline-none focus:border-[#0053E2] focus:ring-2 focus:ring-[#0053E2]/15 placeholder:text-[#9C9885] placeholder:font-normal"
+                className="w-full rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-[13.5px] font-medium outline-none focus:border-[#0053E2] focus:ring-1 focus:ring-[#0053E2] placeholder:text-[#9C9885] placeholder:font-normal"
               />
             </div>
 
@@ -89,10 +118,12 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                 <label className="block text-[12px] font-medium text-[#4A4740] mb-1.5">
                   Date
                 </label>
-                <div className="flex items-center gap-2 rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 focus-within:border-[#0053E2] focus-within:ring-2 focus-within:ring-[#0053E2]/15">
+                <div className="flex items-center gap-2 rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 focus-within:border-[#0053E2] focus-within:ring-1 focus-within:ring-[#0053E2]">
                   <Calendar size={15} className="text-[#9C9885] shrink-0" />
                   <input
-                    defaultValue="Sep 8, 2026"
+                    value={date}
+                    type="date"
+                    onChange={(e) => onFormChange("date", e.target.value)}
                     className="flex-1 bg-transparent text-[13px] font-medium outline-none min-w-0"
                   />
                 </div>
@@ -101,33 +132,80 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                 <label className="block text-[12px] font-medium text-[#4A4740] mb-1.5">
                   Payment method
                 </label>
-                <button className="w-full flex items-center gap-2 rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-left hover:border-[#D8D5CE]">
+                <div className="relative w-full flex items-center gap-2 rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-left hover:border-[#D8D5CE]">
                   <CreditCard size={15} className="text-[#9C9885] shrink-0" />
-                  <span className="flex-1 text-[13px] font-medium truncate">
-                    Debit •••• 4521
-                  </span>
-                  <ChevronDown size={14} className="text-[#9C9885] shrink-0" />
-                </button>
+                  <select
+                    onChange={(e) =>
+                      onFormChange("paymentMethod", e.target.value)
+                    }
+                    value={paymentMethod}
+                    className="flex-1 appearance-none bg-transparent text-[13px] font-medium truncate outline-none cursor-pointer"
+                  >
+                    <option value="Mastercard" className="py-2 px-3">
+                      Mastercard
+                    </option>
+                    <option value="Visa" className="py-2 px-3">
+                      Visa
+                    </option>
+                    <option value="Google Pay" className="py-2 px-3">
+                      Google Pay
+                    </option>
+                    <option value="Apple Pay" className="py-2 px-3">
+                      Apple Pay
+                    </option>
+                    <option value="Mpesa" className="py-2 px-3">
+                      Mpesa
+                    </option>
+                    <option value="PayPal" className="py-2 px-3">
+                      PayPal
+                    </option>
+                    <option value="Cash" className="py-2 px-3">
+                      Cash
+                    </option>
+                  </select>
+                  <ChevronDown
+                    size={14}
+                    className="text-[#9C9885] shrink-0 pointer-events-none"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Recurring toggle */}
-            <div className="flex items-center justify-between rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5">
+            <label className="flex items-center justify-between rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 cursor-pointer">
               <div className="flex items-center gap-2.5 min-w-0">
                 <Wallet size={15} className="text-[#9C9885] shrink-0" />
+
                 <div className="min-w-0">
                   <p className="text-[13px] font-medium leading-tight">
                     Recurring expense
                   </p>
+
                   <p className="text-[11.5px] text-[#9C9885] leading-tight">
                     Repeats monthly on this date
                   </p>
                 </div>
               </div>
-              <div className="h-5 w-9 rounded-full bg-[#E3E0D8] relative shrink-0">
-                <div className="absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white shadow" />
+
+              <input
+                type="checkbox"
+                checked={isRecurring}
+                onChange={(e) => onFormChange("isRecurring", e.target.checked)}
+                className="sr-only"
+              />
+
+              <div
+                className={`h-5 w-9 rounded-full relative shrink-0 transition-colors ${
+                  isRecurring ? "bg-[#6B705C]" : "bg-[#E3E0D8]"
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                    formData.isRecurring ? "translate-x-4" : "translate-x-0.5"
+                  }`}
+                />
               </div>
-            </div>
+            </label>
 
             {/* Attachment  */}
             <button className="hidden lg:flex items-center gap-2 text-[12.5px] font-medium text-[#0053E2]">
@@ -154,54 +232,66 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                   label="Groceries"
                   color="#0053E2"
                   bg="#E8EFFD"
+                  active={category === "Groceries"}
+                  onClick={() => onFormChange("category", "Groceries")}
                 />
                 <CategoryChip
                   icon={<Fuel size={16} />}
                   label="Gas"
                   color="#B4560A"
                   bg="#FDF0E4"
+                  active={category === "Gas"}
+                  onClick={() => onFormChange("category", "Gas")}
                 />
                 <CategoryChip
                   icon={<UtensilsCrossed size={16} />}
                   label="Dining"
                   color="#E01A2B"
                   bg="#FDE9EA"
-                  active
+                  active={category === "Dining"}
+                  onClick={() => onFormChange("category", "Dining")}
                 />
                 <CategoryChip
                   icon={<Tv size={16} />}
                   label="Subs"
                   color="#6D3FC0"
                   bg="#F0EAFB"
+                  active={category === "Subs"}
+                  onClick={() => onFormChange("category", "Subs")}
                 />
                 <CategoryChip
                   icon={<Zap size={16} />}
                   label="Utilities"
                   color="#B58900"
                   bg="#FBF3D9"
+                  active={category === "Utilities"}
+                  onClick={() => onFormChange("category", "Utilities")}
                 />
                 <CategoryChip
                   icon={<ShoppingBag size={16} />}
                   label="Shopping"
                   color="#0F7B6C"
                   bg="#E3F4F0"
+                  active={category === "Shopping"}
+                  onClick={() => onFormChange("category", "Shopping")}
                 />
                 <CategoryChip
                   icon={<Film size={16} />}
                   label="Fun"
                   color="#C23B7A"
                   bg="#FBE7F0"
+                  active={category === "Fun"}
+                  onClick={() => onFormChange("category", "Fun")}
                 />
                 <CategoryChip
                   icon={<HeartPulse size={16} />}
                   label="Health"
                   color="#2B7A4B"
                   bg="#E6F3EA"
+                  active={category === "Health"}
+                  onClick={() => onFormChange("category", "Health")}
                 />
               </div>
-              <p className="mt-2.5 text-[11.5px] font-medium text-[#B4560A] bg-[#FDF0E4] rounded-md px-2.5 py-1.5">
-                This category is already over budget for September.
-              </p>
             </div>
 
             {/* Notes */}
@@ -213,8 +303,9 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
               <textarea
                 rows={3}
                 placeholder="Add a note..."
-                defaultValue="Lunch with Priya"
-                className="w-full resize-none rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-[13px] outline-none focus:border-[#0053E2] focus:ring-2 focus:ring-[#0053E2]/15 placeholder:text-[#9C9885]"
+                value={notes}
+                onChange={(e) => onFormChange("notes", e.target.value)}
+                className="w-full resize-none rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-[13px] outline-none focus:border-[#0053E2] focus:ring-1 focus:ring-[#0053E2] placeholder:text-[#9C9885]"
               />
             </div>
 
@@ -237,13 +328,16 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
             >
               Cancel
             </button>
-            <button className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#0053E2] px-4 py-2 text-[13.5px] font-semibold text-white hover:bg-[#0047C4] transition-colors">
+            <button
+              type="submit"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#0053E2] px-4 py-2 text-[13.5px] font-semibold text-white hover:bg-[#0047C4] transition-colors"
+            >
               <Check size={15} strokeWidth={2.5} />
               Save expense
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
