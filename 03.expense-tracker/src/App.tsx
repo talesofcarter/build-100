@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import AlertBanner from "./components/AlertBanner";
 import CategorySection from "./components/CategorySection";
 import MembershipCardHero from "./components/MembershipCardHero";
@@ -12,6 +11,7 @@ import AddExpenseModal from "./components/AddExpenseModal";
 import type { FormDataType } from "./types";
 
 function App(): React.JSX.Element {
+  const [expenses, setExpenses] = useState<FormDataType[]>([]);
   const [formData, setFormData] = useState<FormDataType>({
     amount: 0,
     merchant: "",
@@ -33,6 +33,45 @@ function App(): React.JSX.Element {
     }));
   };
 
+  const addNewExpense = (): void => {
+    const newExpense = {
+      id: crypto.randomUUID(),
+      ...formData,
+    };
+
+    setExpenses((prev) => [...prev, newExpense]);
+  };
+
+  const resetForm = (): void => {
+    const clearedInputs: FormDataType = {
+      amount: 0,
+      merchant: "",
+      date: "",
+      paymentMethod: "",
+      isRecurring: false,
+      category: "",
+      notes: "",
+    };
+
+    setFormData(clearedInputs);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    try {
+      addNewExpense();
+      resetForm();
+      setOpenModal(false);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(expenses);
+  }, [expenses]);
+
   return (
     <main className="flex h-screen w-full bg-[#FBFAF7] text-[#14171A] font-sans antialiased">
       <Sidebar onOpen={setOpenModal} />
@@ -43,6 +82,7 @@ function App(): React.JSX.Element {
             onClose={setOpenModal}
             formData={formData}
             onFormChange={handleFormChange}
+            onFormSubmit={handleFormSubmit}
           />
         )}
         <main className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">

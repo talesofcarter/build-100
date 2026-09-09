@@ -25,12 +25,14 @@ interface AddExpenseModalProps {
     field: keyof FormDataType,
     value: string | number | boolean,
   ) => void;
+  onFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const AddExpenseModal = ({
   onClose,
   formData,
   onFormChange,
+  onFormSubmit,
 }: AddExpenseModalProps) => {
   const {
     amount,
@@ -42,17 +44,13 @@ const AddExpenseModal = ({
     notes,
   } = formData;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-  };
-
   return (
     <div
       onClick={() => onClose(false)}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#14171A]/45 backdrop-blur-[2px] font-sans px-4 py-6"
     >
       <form
-        onSubmit={handleSubmit}
+        onSubmit={onFormSubmit}
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-230 max-h-[94vh] overflow-y-auto rounded-2xl bg-white border border-[#E3E0D8] shadow-[0_20px_60px_rgba(20,23,26,0.18)]"
       >
