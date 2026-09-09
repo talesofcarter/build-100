@@ -1,6 +1,13 @@
 import React from "react";
 
-const MembershipCardHero = (): React.JSX.Element => {
+interface MembershipCardProps {
+  totals: () => number;
+}
+
+const MembershipCardHero = ({
+  totals,
+}: MembershipCardProps): React.JSX.Element => {
+  const expenseTotals = totals();
   return (
     <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#0053E2] to-[#00308F] px-6 md:px-8 py-7 text-white">
       <div className="absolute -right-10 -top-16 h-56 w-56 rounded-full bg-white/5" />
@@ -12,7 +19,7 @@ const MembershipCardHero = (): React.JSX.Element => {
             Discretionary budget &mdash; September 2026
           </p>
           <p className="mt-2 text-[38px] font-mono font-semibold leading-none">
-            $2,143.67
+            ${expenseTotals}
           </p>
           <p className="mt-1.5 text-[13px] text-white/70">
             of $3,200.00 monthly budget

@@ -92,11 +92,11 @@ const AddExpenseModal = ({
                   $
                 </span>
                 <input
+                  type="number"
+                  inputMode="decimal"
+                  step="0.01"
                   value={amount}
-                  onChange={(e) =>
-                    onFormChange("amount", Number(e.target.value))
-                  }
-                  required
+                  onChange={(e) => onFormChange("amount", e.target.value)}
                   className="flex-1 bg-transparent text-[22px] font-mono font-semibold outline-none min-w-0"
                 />
                 <span className="text-[12px] font-mono text-[#9C9885]">
@@ -113,7 +113,6 @@ const AddExpenseModal = ({
               <input
                 value={merchant}
                 onChange={(e) => onFormChange("merchant", e.target.value)}
-                required
                 placeholder="Where did you spend?"
                 className="w-full rounded-xl border border-[#E3E0D8] bg-[#FBFAF7] px-3.5 py-2.5 text-[13.5px] font-medium outline-none focus:border-[#0053E2] focus:ring-1 focus:ring-[#0053E2] placeholder:text-[#9C9885] placeholder:font-normal"
               />
@@ -131,7 +130,6 @@ const AddExpenseModal = ({
                     value={date}
                     type="date"
                     onChange={(e) => onFormChange("date", e.target.value)}
-                    required
                     className="flex-1 bg-transparent text-[13px] font-medium outline-none min-w-0"
                   />
                 </div>
