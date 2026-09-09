@@ -19,6 +19,10 @@ interface NavItemsType {
   label: string;
 }
 
+interface SidebarProps {
+  onOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const navItems: NavItemsType[] = [
   {
     id: 1,
@@ -40,7 +44,7 @@ const navItems: NavItemsType[] = [
   },
 ];
 
-const Sidebar = (): React.JSX.Element => {
+const Sidebar = ({ onOpen }: SidebarProps): React.JSX.Element => {
   return (
     <aside className="hidden md:flex md:w-64 shrink-0 flex-col border-r border-[#E3E0D8] bg-[#F4F2EC]">
       {/* Workspace switcher */}
@@ -61,7 +65,10 @@ const Sidebar = (): React.JSX.Element => {
 
       {/* Add expense CTA */}
       <div className="px-3 pt-4">
-        <button className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-[#FFC220] px-3 py-2 text-[13.5px] font-semibold text-[#14171A] hover:bg-[#F5B700] transition-colors">
+        <button
+          onClick={() => onOpen(true)}
+          className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-[#FFC220] px-3 py-2 text-[13.5px] font-semibold text-[#14171A] hover:bg-[#F5B700] transition-colors"
+        >
           <Plus size={16} strokeWidth={2.5} />
           Add expense
         </button>

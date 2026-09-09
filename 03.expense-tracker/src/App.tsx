@@ -14,7 +14,7 @@ function App(): React.JSX.Element {
   const [openModal, setOpenModal] = useState<boolean>(false);
   return (
     <main className="flex h-screen w-full bg-[#FBFAF7] text-[#14171A] font-sans antialiased">
-      <Sidebar />
+      <Sidebar onOpen={setOpenModal} />
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <Topbar />
         {openModal && <AddExpenseModal onClose={setOpenModal} />}

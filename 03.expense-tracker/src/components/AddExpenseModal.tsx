@@ -23,8 +23,14 @@ interface AddExpenseModalProps {
 
 const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#14171A]/45 backdrop-blur-[2px] font-sans px-4 py-6">
-      <div className="w-full max-w-[920px] max-h-[94vh] overflow-y-auto rounded-2xl bg-white border border-[#E3E0D8] shadow-[0_20px_60px_rgba(20,23,26,0.18)]">
+    <div
+      onClick={() => onClose(false)}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#14171A]/45 backdrop-blur-[2px] font-sans px-4 py-6"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-[920px] max-h-[94vh] overflow-y-auto rounded-2xl bg-white border border-[#E3E0D8] shadow-[0_20px_60px_rgba(20,23,26,0.18)]"
+      >
         {/* Header */}
         <div className="flex items-start justify-between px-6 sm:px-8 pt-5 pb-4 border-b border-[#E3E0D8]">
           <div>
