@@ -7,7 +7,18 @@ interface MembershipCardProps {
 const MembershipCardHero = ({
   totals,
 }: MembershipCardProps): React.JSX.Element => {
-  const expenseTotals = totals();
+  const expenseTotals = Math.round(totals() * 100) / 100;
+
+  const currentMonth: React.ReactNode = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const today = new Date();
+  const daysRemaining =
+    new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate() -
+    today.getDate();
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#0053E2] to-[#00308F] px-6 md:px-8 py-7 text-white">
       <div className="absolute -right-10 -top-16 h-56 w-56 rounded-full bg-white/5" />
@@ -16,10 +27,10 @@ const MembershipCardHero = ({
       <div className="relative flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div>
           <p className="text-[12px] font-medium tracking-wide text-white/70">
-            Discretionary budget &mdash; September 2026
+            Discretionary budget &mdash; {currentMonth}
           </p>
           <p className="mt-2 text-[38px] font-mono font-semibold leading-none">
-            $10,000.34
+            ${expenseTotals}
           </p>
           <p className="mt-1.5 text-[13px] text-white/70">
             of $3,200.00 monthly budget
@@ -29,7 +40,7 @@ const MembershipCardHero = ({
         <div className="w-full md:w-72">
           <div className="flex justify-between text-[12px] text-white/80 mb-1.5">
             <span>67% used</span>
-            <span>22 days left</span>
+            <span>{daysRemaining} days left</span>
           </div>
           <div className="h-2.5 w-full rounded-full bg-white/15 overflow-hidden">
             <div

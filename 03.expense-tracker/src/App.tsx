@@ -70,7 +70,7 @@ function App(): React.JSX.Element {
   };
 
   const calculateTotalExpenses = (): number => {
-    return expenses.reduce((acc, total) => acc + total.amount, 0);
+    return expenses.reduce((acc, expense) => acc + Number(expense.amount), 0);
   };
 
   useEffect(() => {
