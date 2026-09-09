@@ -9,9 +9,10 @@ import StatcardSection from "./components/StatcardSection";
 import Topbar from "./components/Topbar";
 import AddExpenseModal from "./components/AddExpenseModal";
 import type { FormDataType } from "./types";
+import { loadSavedExpenses, KEY } from "./utils/savedExpenses";
 
 function App(): React.JSX.Element {
-  const [expenses, setExpenses] = useState<FormDataType[]>([]);
+  const [expenses, setExpenses] = useState<FormDataType[]>(loadSavedExpenses);
   const [formData, setFormData] = useState<FormDataType>({
     amount: 0,
     merchant: "",
@@ -73,6 +74,7 @@ function App(): React.JSX.Element {
   };
 
   useEffect(() => {
+    localStorage.setItem(KEY, JSON.stringify(expenses));
     console.log(expenses);
   }, [expenses]);
 

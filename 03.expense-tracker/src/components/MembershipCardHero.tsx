@@ -19,7 +19,7 @@ const MembershipCardHero = ({
             Discretionary budget &mdash; September 2026
           </p>
           <p className="mt-2 text-[38px] font-mono font-semibold leading-none">
-            ${expenseTotals}
+            $10,000.34
           </p>
           <p className="mt-1.5 text-[13px] text-white/70">
             of $3,200.00 monthly budget
