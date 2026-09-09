@@ -11,7 +11,13 @@ import {
   HeartPulse,
 } from "lucide-react";
 
-const CategoryBreakdown = (): React.JSX.Element => {
+interface CategorySectionProps {
+  getTotalsByCategory: (category: string) => number;
+}
+
+const CategoryBreakdown = ({
+  getTotalsByCategory,
+}: CategorySectionProps): React.JSX.Element => {
   return (
     <div className="lg:col-span-2">
       <div className="flex items-center justify-between mb-3.5">
@@ -24,7 +30,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<ShoppingCart size={17} />}
           name="Groceries"
-          spent={512.4}
+          spent={getTotalsByCategory("Groceries")}
           budget={600}
           color="#0053E2"
           bg="#E8EFFD"
@@ -32,7 +38,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<Fuel size={17} />}
           name="Gas & Fuel"
-          spent={198.1}
+          spent={getTotalsByCategory("Gas")}
           budget={220}
           color="#B4560A"
           bg="#FDF0E4"
@@ -40,7 +46,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<UtensilsCrossed size={17} />}
           name="Dining Out"
-          spent={402.85}
+          spent={getTotalsByCategory("Dining")}
           budget={350}
           color="#E01A2B"
           bg="#FDE9EA"
@@ -49,7 +55,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<Tv size={17} />}
           name="Subscriptions"
-          spent={94.97}
+          spent={getTotalsByCategory("Subs")}
           budget={120}
           color="#6D3FC0"
           bg="#F0EAFB"
@@ -57,7 +63,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<Zap size={17} />}
           name="Utilities"
-          spent={246.3}
+          spent={getTotalsByCategory("Utilities")}
           budget={280}
           color="#B58900"
           bg="#FBF3D9"
@@ -65,7 +71,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<ShoppingBag size={17} />}
           name="Shopping"
-          spent={289.99}
+          spent={getTotalsByCategory("Shopping")}
           budget={400}
           color="#0F7B6C"
           bg="#E3F4F0"
@@ -73,7 +79,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<Film size={17} />}
           name="Entertainment"
-          spent={87.5}
+          spent={getTotalsByCategory("Fun")}
           budget={150}
           color="#C23B7A"
           bg="#FBE7F0"
@@ -81,7 +87,7 @@ const CategoryBreakdown = (): React.JSX.Element => {
         <CategoryTile
           icon={<HeartPulse size={17} />}
           name="Healthcare"
-          spent={60}
+          spent={getTotalsByCategory("Health")}
           budget={200}
           color="#2B7A4B"
           bg="#E6F3EA"

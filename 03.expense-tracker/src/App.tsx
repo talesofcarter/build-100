@@ -73,6 +73,12 @@ function App(): React.JSX.Element {
     return expenses.reduce((acc, expense) => acc + Number(expense.amount), 0);
   };
 
+  const calculateTotalsCategory = (category: string) => {
+    return expenses
+      .filter((c) => c.category === category)
+      .reduce((acc, expense) => acc + Number(expense.amount), 0);
+  };
+
   useEffect(() => {
     localStorage.setItem(KEY, JSON.stringify(expenses));
     console.log(expenses);
@@ -97,7 +103,7 @@ function App(): React.JSX.Element {
           <MembershipCardHero totals={calculateTotalExpenses} />
           <StatcardSection />
           <AlertBanner />
-          <CategorySection />
+          <CategorySection getTotalsByCategory={calculateTotalsCategory} />
           <RecentTransactions
             expenses={expenses}
             totals={calculateTotalExpenses}
