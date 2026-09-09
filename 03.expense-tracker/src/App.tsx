@@ -8,13 +8,13 @@ import Sidebar from "./components/Sidebar";
 import StatcardSection from "./components/StatcardSection";
 import Topbar from "./components/Topbar";
 import AddExpenseModal from "./components/AddExpenseModal";
-import type { FormDataType } from "./types";
+import type { FormDataType, Expense } from "./types";
 import { loadSavedExpenses, KEY } from "./utils/savedExpenses";
 
 function App(): React.JSX.Element {
-  const [expenses, setExpenses] = useState<FormDataType[]>(loadSavedExpenses);
+  const [expenses, setExpenses] = useState<Expense[]>(loadSavedExpenses);
   const [formData, setFormData] = useState<FormDataType>({
-    amount: 0,
+    amount: "0",
     merchant: "",
     date: "",
     paymentMethod: "",
@@ -45,7 +45,7 @@ function App(): React.JSX.Element {
 
   const resetForm = (): void => {
     const clearedInputs: FormDataType = {
-      amount: 0,
+      amount: "0",
       merchant: "",
       date: "",
       paymentMethod: "",
@@ -98,7 +98,10 @@ function App(): React.JSX.Element {
           <StatcardSection />
           <AlertBanner />
           <CategorySection />
-          <RecentTransactions />
+          <RecentTransactions
+            expenses={expenses}
+            totals={calculateTotalExpenses}
+          />
           <div className="h-4" />
         </main>
       </div>
