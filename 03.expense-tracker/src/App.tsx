@@ -101,7 +101,7 @@ function App(): React.JSX.Element {
         <main className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">
           <PageHeading onOpen={setOpenModal} />
           <MembershipCardHero totals={calculateTotalExpenses} />
-          <StatcardSection />
+          <StatcardSection totals={calculateTotalExpenses} />
           <AlertBanner />
           <CategorySection getTotalsByCategory={calculateTotalsCategory} />
           <RecentTransactions

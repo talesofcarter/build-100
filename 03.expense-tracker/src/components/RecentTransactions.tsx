@@ -18,7 +18,9 @@ const labels = [
 const RecentTransactions = ({
   expenses,
   totals,
-}: RecentTransactionsProps): React.JSX.Element => {
+}: RecentTransactionsProps): React.JSX.Element | null => {
+  if (expenses.length === 0) return null;
+
   const expenseTotals = Math.round(totals() * 100) / 100;
   return (
     <div>

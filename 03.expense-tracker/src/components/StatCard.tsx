@@ -44,7 +44,7 @@ const StatCard = ({
         <span className="text-[#9C9885]">{icon}</span>
       </div>
       <p className="text-[21px] font-mono font-semibold leading-none">
-        {value}
+        ${value}
       </p>
       <div className="flex items-center gap-1.5 mt-2.5">
         <span
