@@ -14,7 +14,7 @@ import {
   clearSavedExpenses,
   EXPENSES_KEY,
 } from "./utils/savedExpenses";
-import { loadUser, saveUser, clearUser } from "./utils/auth";
+import { loadUser, saveUser, clearUser, getMemberSince } from "./utils/auth";
 import LoginPage from "./components/LoginPage";
 
 const emptyForm: FormDataType = {
@@ -148,7 +148,11 @@ function App(): React.JSX.Element {
         )}
         <main className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">
           <PageHeading onOpen={setOpenModal} />
-          <MembershipCardHero totals={calculateTotalExpenses} />
+          <MembershipCardHero
+            totals={calculateTotalExpenses}
+            transactionCount={expenses.length}
+            memberSince={getMemberSince()}
+          />
           <StatcardSection
             totals={calculateTotalExpenses}
             expenses={expenses}

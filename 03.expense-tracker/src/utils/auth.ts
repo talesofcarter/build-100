@@ -1,4 +1,5 @@
 export const USER_KEY = "user";
+export const MEMBER_SINCE_KEY = "membership";
 
 export const loadUser = (): string | null => {
   try {
@@ -11,6 +12,10 @@ export const loadUser = (): string | null => {
 export const saveUser = (name: string): void => {
   try {
     localStorage.setItem(USER_KEY, name);
+
+    if (!localStorage.getItem(MEMBER_SINCE_KEY)) {
+      localStorage.setItem(MEMBER_SINCE_KEY, new Date().toISOString());
+    }
   } catch (error) {
     console.error("Error:", error);
   }
@@ -21,6 +26,14 @@ export const clearUser = (): void => {
     localStorage.removeItem(USER_KEY);
   } catch (error) {
     console.error("Error:", error);
+  }
+};
+
+export const getMemberSince = () => {
+  try {
+    return localStorage.getItem(MEMBER_SINCE_KEY) || new Date().toISOString();
+  } catch {
+    return new Date().toISOString();
   }
 };
 

@@ -2,22 +2,36 @@ import React from "react";
 
 interface MembershipCardProps {
   totals: () => number;
+  transactionCount: number;
+  memberSince: string;
 }
 
 const MembershipCardHero = ({
   totals,
+  transactionCount,
+  memberSince,
 }: MembershipCardProps): React.JSX.Element => {
-  const expenseTotals = Math.round(totals() * 100) / 100;
-
-  const currentMonth: React.ReactNode = new Date().toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
+  const total = Math.round(totals() * 100) / 100;
 
   const today = new Date();
+
+  const currentDate = today.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+
   const daysRemaining =
     new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate() -
     today.getDate();
+
+  const memberSinceLabel = new Date(memberSince)
+    .toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    .toUpperCase();
+
+  const dailyAverage =
+    transactionCount > 0
+      ? Math.round((total / today.getDate()) * 100) / 100
+      : 0;
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#0053E2] to-[#00308F] px-6 md:px-8 py-7 text-white">
@@ -27,38 +41,41 @@ const MembershipCardHero = ({
       <div className="relative flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div>
           <p className="text-[12px] font-medium tracking-wide text-white/70">
-            Discretionary budget &mdash; {currentMonth}
+            Balance
           </p>
           <p className="mt-2 text-[38px] font-mono font-semibold leading-none">
-            ${expenseTotals}
+            ${total}
           </p>
           <p className="mt-1.5 text-[13px] text-white/70">
-            of $3,200.00 monthly budget
+            {transactionCount}{" "}
+            {transactionCount === 1 ? "transaction" : "transactions"} logged
           </p>
         </div>
 
-        <div className="w-full md:w-72">
-          <div className="flex justify-between text-[12px] text-white/80 mb-1.5">
-            <span>67% used</span>
-            <span>{daysRemaining} days left</span>
+        <div className="grid grid-cols-2 gap-8 text-right">
+          <div>
+            <p className="text-[11px] font-medium tracking-wide text-white/60">
+              Current date
+            </p>
+            <p className="mt-1 text-[15px] font-mono font-semibold">
+              {currentDate}
+            </p>
           </div>
-          <div className="h-2.5 w-full rounded-full bg-white/15 overflow-hidden">
-            <div
-              className="h-full rounded-full bg-[#FFC220]"
-              style={{ width: "67%" }}
-            />
+          <div>
+            <p className="text-[11px] font-medium tracking-wide text-white/60">
+              Days left
+            </p>
+            <p className="mt-1 text-[15px] font-mono font-semibold">
+              {daysRemaining}
+            </p>
           </div>
-          <p className="mt-2 text-[12.5px] text-white/70">
-            $1,056.33 remaining
-          </p>
         </div>
       </div>
 
       {/* receipt-style perforation strip */}
       <div className="relative mt-6 pt-4 border-t border-dashed border-white/25 flex items-center justify-between text-[11.5px] font-mono text-white/60">
-        <span>MEMBER SINCE JAN 2024</span>
-        <span>CARD •••• 4521</span>
-        <span>PLAN: DISCRETIONARY</span>
+        <span>MEMBER SINCE {memberSinceLabel}</span>
+        <span>AVG/DAY ${dailyAverage.toFixed(2)}</span>
       </div>
     </div>
   );
