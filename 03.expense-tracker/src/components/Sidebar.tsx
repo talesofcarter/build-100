@@ -10,7 +10,9 @@ import {
   Tag,
   Settings,
   type LucideIcon,
+  LogOut,
 } from "lucide-react";
+import { getInitials } from "../utils/auth";
 
 interface NavItemsType {
   id: number;
@@ -21,6 +23,8 @@ interface NavItemsType {
 
 interface SidebarProps {
   onOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  userName: string;
+  onLogout: () => void;
 }
 
 const navItems: NavItemsType[] = [
@@ -44,7 +48,11 @@ const navItems: NavItemsType[] = [
   },
 ];
 
-const Sidebar = ({ onOpen }: SidebarProps): React.JSX.Element => {
+const Sidebar = ({
+  onOpen,
+  userName,
+  onLogout,
+}: SidebarProps): React.JSX.Element => {
   return (
     <aside className="hidden md:flex md:w-64 shrink-0 flex-col border-r border-[#E3E0D8] bg-[#F4F2EC]">
       {/* Workspace switcher */}
@@ -54,7 +62,7 @@ const Sidebar = ({ onOpen }: SidebarProps): React.JSX.Element => {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[13.5px] font-semibold leading-tight truncate">
-            Alex's Finances
+            {userName}'s Finances
           </p>
           <p className="text-[11.5px] text-[#7A776D] leading-tight">
             Personal workspace
@@ -135,16 +143,20 @@ const Sidebar = ({ onOpen }: SidebarProps): React.JSX.Element => {
         </a>
         <div className="flex items-center gap-2.5 px-2.5 py-1.5">
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0053E2] text-[11.5px] font-semibold text-white">
-            KJ
+            {getInitials(userName)}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="text-[12.5px] font-medium leading-tight truncate">
-              Kelvin Juma
-            </p>
-            <p className="text-[11px] text-[#9C9885] leading-tight truncate">
-              kelvinjuma@dev
+              {userName}
             </p>
           </div>
+          <button
+            onClick={onLogout}
+            title="Sign out"
+            className="text-[#9C9885] hover:text-[#4A4740] shrink-0"
+          >
+            <LogOut size={14} />
+          </button>
         </div>
       </div>
     </aside>

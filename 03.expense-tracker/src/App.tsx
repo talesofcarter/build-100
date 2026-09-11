@@ -42,7 +42,7 @@ function App(): React.JSX.Element {
     setUserName(name);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     clearUser();
     setUserName("");
   };
@@ -124,7 +124,11 @@ function App(): React.JSX.Element {
 
   return (
     <main className="flex h-screen w-full bg-[#FBFAF7] text-[#14171A] font-sans antialiased">
-      <Sidebar onOpen={setOpenModal} />
+      <Sidebar
+        onOpen={setOpenModal}
+        userName={userName}
+        onLogout={handleLogout}
+      />
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <Topbar />
         {openModal && (
