@@ -9,7 +9,11 @@ import StatcardSection from "./components/StatcardSection";
 import Topbar from "./components/Topbar";
 import AddExpenseModal from "./components/AddExpenseModal";
 import type { FormDataType, Expense } from "./types";
-import { loadSavedExpenses, KEY } from "./utils/savedExpenses";
+import {
+  loadSavedExpenses,
+  clearSavedExpenses,
+  EXPENSES_KEY,
+} from "./utils/savedExpenses";
 import { loadUser, saveUser, clearUser } from "./utils/auth";
 import LoginPage from "./components/LoginPage";
 
@@ -45,6 +49,8 @@ function App(): React.JSX.Element {
   const handleLogout = (): void => {
     clearUser();
     setUserName("");
+    clearSavedExpenses();
+    setExpenses([]);
   };
 
   const handleFormChange = (
@@ -115,7 +121,7 @@ function App(): React.JSX.Element {
   };
 
   useEffect(() => {
-    localStorage.setItem(KEY, JSON.stringify(expenses));
+    localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
   }, [expenses]);
 
   if (!userName) {
