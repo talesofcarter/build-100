@@ -1,14 +1,6 @@
 import {
   X,
   Calendar,
-  ShoppingCart,
-  Fuel,
-  UtensilsCrossed,
-  Tv,
-  Zap,
-  ShoppingBag,
-  Film,
-  HeartPulse,
   Check,
   ChevronDown,
   CreditCard,
@@ -17,6 +9,7 @@ import {
 } from "lucide-react";
 import CategoryChip from "./CategoryChip";
 import type { FormDataType } from "../types";
+import { List } from "../utils/Categories";
 
 interface AddExpenseModalProps {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -224,79 +217,24 @@ const AddExpenseModal = ({
           <div className="space-y-5 lg:border-l lg:border-[#E3E0D8] lg:pl-10">
             {/* Category */}
             <div>
-              <div className="flex items-center justify-between mb-1.5 gap-2">
-                <label className="block text-[12px] font-medium text-[#4A4740] shrink-0">
-                  Category
-                </label>
-                <span className="text-[11.5px] text-[#9C9885] text-right">
-                  $350.00 budget &middot; $402.85 spent
-                </span>
-              </div>
+              <label
+                htmlFor="category"
+                className="block text-xs font-medium text-[#4A4740] mb-1.5"
+              >
+                Category
+              </label>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                <CategoryChip
-                  icon={<ShoppingCart size={16} />}
-                  label="Groceries"
-                  color="#0053E2"
-                  bg="#E8EFFD"
-                  active={category === "Groceries"}
-                  onClick={() => onFormChange("category", "Groceries")}
-                />
-                <CategoryChip
-                  icon={<Fuel size={16} />}
-                  label="Gas"
-                  color="#B4560A"
-                  bg="#FDF0E4"
-                  active={category === "Gas"}
-                  onClick={() => onFormChange("category", "Gas")}
-                />
-                <CategoryChip
-                  icon={<UtensilsCrossed size={16} />}
-                  label="Dining"
-                  color="#E01A2B"
-                  bg="#FDE9EA"
-                  active={category === "Dining"}
-                  onClick={() => onFormChange("category", "Dining")}
-                />
-                <CategoryChip
-                  icon={<Tv size={16} />}
-                  label="Subs"
-                  color="#6D3FC0"
-                  bg="#F0EAFB"
-                  active={category === "Subs"}
-                  onClick={() => onFormChange("category", "Subs")}
-                />
-                <CategoryChip
-                  icon={<Zap size={16} />}
-                  label="Utilities"
-                  color="#B58900"
-                  bg="#FBF3D9"
-                  active={category === "Utilities"}
-                  onClick={() => onFormChange("category", "Utilities")}
-                />
-                <CategoryChip
-                  icon={<ShoppingBag size={16} />}
-                  label="Shopping"
-                  color="#0F7B6C"
-                  bg="#E3F4F0"
-                  active={category === "Shopping"}
-                  onClick={() => onFormChange("category", "Shopping")}
-                />
-                <CategoryChip
-                  icon={<Film size={16} />}
-                  label="Fun"
-                  color="#C23B7A"
-                  bg="#FBE7F0"
-                  active={category === "Fun"}
-                  onClick={() => onFormChange("category", "Fun")}
-                />
-                <CategoryChip
-                  icon={<HeartPulse size={16} />}
-                  label="Health"
-                  color="#2B7A4B"
-                  bg="#E6F3EA"
-                  active={category === "Health"}
-                  onClick={() => onFormChange("category", "Health")}
-                />
+                {List.map(({ id, shortLabel, icon: Icon, color, bg }) => (
+                  <CategoryChip
+                    key={id}
+                    icon={<Icon size={16} />}
+                    label={shortLabel}
+                    color={color}
+                    bg={bg}
+                    active={category === id}
+                    onClick={() => onFormChange("category", id)}
+                  />
+                ))}
               </div>
             </div>
 
