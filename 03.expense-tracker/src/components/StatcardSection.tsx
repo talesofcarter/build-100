@@ -1,6 +1,6 @@
 import React from "react";
 import StatCard from "./StatCard";
-import { Receipt, PiggyBank, TrendingUp, Bell } from "lucide-react";
+import { Receipt, PiggyBank, TrendingUp, ListChecks } from "lucide-react";
 import type { Expense } from "../types";
 
 interface StatsProps {
@@ -14,43 +14,45 @@ const StatcardSection = ({
   expenses,
   topCategory,
 }: StatsProps): React.JSX.Element => {
-  const expensesTotals = Math.round(totals() * 100) / 100;
+  const total = Math.round(totals() * 100) / 100;
   const topCategoryLabel = topCategory(expenses);
-  console.log(topCategoryLabel);
+  const topCategoryTotal = expenses
+    .filter((e) => e.category === topCategoryLabel)
+    .reduce((acc, e) => acc + Number(e.amount), 0);
+
+  const today = new Date();
+  const dailyAverage =
+    expenses.length > 0 ? Math.round((total / today.getDate()) * 100) / 100 : 0;
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
         label="Total spent"
-        value={expensesTotals.toString()}
-        delta="+12.4%"
-        deltaTone="down"
-        caption="vs. last month"
+        value={total.toFixed(2)}
+        caption="this month"
         icon={<Receipt size={16} />}
+        prefix={"$"}
       />
       <StatCard
-        label="Top Category"
-        value="1,056.33"
-        delta="33%"
-        deltaTone="neutral"
-        caption={topCategoryLabel}
+        label="Top category"
+        value={topCategoryTotal.toFixed(2)}
+        caption={topCategoryLabel || "No spending yet"}
         icon={<PiggyBank size={16} />}
+        prefix={"$"}
       />
       <StatCard
         label="Daily average"
-        value={(Math.round((expensesTotals / 30) * 100) / 100).toString()}
-        delta="-4.2%"
-        deltaTone="up"
-        caption="vs. last month"
+        value={dailyAverage.toFixed(2)}
+        caption="per day this month"
         icon={<TrendingUp size={16} />}
+        prefix="$"
       />
       <StatCard
-        label="Upcoming bills"
-        value="1,474.99"
-        delta="3 due"
-        deltaTone="neutral"
-        caption="within 14 days"
-        icon={<Bell size={16} />}
+        label="Transactions"
+        value={expenses.length.toString()}
+        prefix=""
+        caption="logged this month"
+        icon={<ListChecks size={16} />}
       />
     </div>
   );
