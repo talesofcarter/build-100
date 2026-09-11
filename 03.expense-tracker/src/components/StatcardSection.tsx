@@ -1,13 +1,23 @@
 import React from "react";
 import StatCard from "./StatCard";
 import { Receipt, PiggyBank, TrendingUp, Bell } from "lucide-react";
+import type { Expense } from "../types";
 
 interface StatsProps {
   totals: () => number;
+  expenses: Expense[];
+  topCategory: (expenses: Expense[]) => string;
 }
 
-const StatcardSection = ({ totals }: StatsProps): React.JSX.Element => {
+const StatcardSection = ({
+  totals,
+  expenses,
+  topCategory,
+}: StatsProps): React.JSX.Element => {
   const expensesTotals = Math.round(totals() * 100) / 100;
+  const topCategoryLabel = topCategory(expenses);
+  console.log(topCategoryLabel);
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
@@ -23,12 +33,12 @@ const StatcardSection = ({ totals }: StatsProps): React.JSX.Element => {
         value="1,056.33"
         delta="33%"
         deltaTone="neutral"
-        caption="Dining"
+        caption={topCategoryLabel}
         icon={<PiggyBank size={16} />}
       />
       <StatCard
         label="Daily average"
-        value={(expensesTotals / 30).toString()}
+        value={(Math.round((expensesTotals / 30) * 100) / 100).toString()}
         delta="-4.2%"
         deltaTone="up"
         caption="vs. last month"
