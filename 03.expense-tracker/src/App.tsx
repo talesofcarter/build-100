@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AlertBanner from "./components/AlertBanner";
 import CategorySection from "./components/CategorySection";
 import MembershipCardHero from "./components/MembershipCardHero";
 import PageHeading from "./components/PageHeading";
@@ -158,7 +157,7 @@ function App(): React.JSX.Element {
             expenses={expenses}
             topCategory={findTopCategory}
           />
-          <AlertBanner />
+
           <CategorySection getTotalsByCategory={calculateTotalsCategory} />
           <RecentTransactions
             expenses={expenses}
