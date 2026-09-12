@@ -15,6 +15,7 @@ import {
 } from "./utils/savedExpenses";
 import { loadUser, saveUser, clearUser, getMemberSince } from "./utils/auth";
 import LoginPage from "./components/LoginPage";
+import { Toaster, toast } from "sonner";
 
 const emptyForm: FormDataType = {
   amount: "0",
@@ -41,15 +42,25 @@ function App(): React.JSX.Element {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleLogin = (name: string): void => {
-    saveUser(name);
-    setUserName(name);
+    try {
+      saveUser(name);
+      setUserName(name);
+      toast.success("Success");
+    } catch {
+      toast.error("Error: Try Again");
+    }
   };
 
   const handleLogout = (): void => {
-    clearUser();
-    setUserName("");
-    clearSavedExpenses();
-    setExpenses([]);
+    try {
+      clearUser();
+      setUserName("");
+      clearSavedExpenses();
+      setExpenses([]);
+      toast.success("Success");
+    } catch {
+      toast.error("Error: Try Again");
+    }
   };
 
   const handleFormChange = (
@@ -84,10 +95,12 @@ function App(): React.JSX.Element {
 
     try {
       addNewExpense();
+      toast.success("Expense Added");
       resetForm();
       setOpenModal(false);
     } catch (error) {
       console.error("Failed to save expense:", error);
+      toast.error("Failed to save expense");
     }
   };
 
@@ -155,6 +168,7 @@ function App(): React.JSX.Element {
 
   return (
     <main className="flex h-screen w-full bg-[#FBFAF7] text-[#14171A] font-sans antialiased">
+      <Toaster position="bottom-right" richColors closeButton duration={4000} />
       <Sidebar
         onOpen={setOpenModal}
         userName={userName}
