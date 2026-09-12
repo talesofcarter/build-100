@@ -33,7 +33,7 @@ function App(): React.JSX.Element {
     amount: "0",
     merchant: "",
     date: "",
-    paymentMethod: "",
+    paymentMethod: "Mastercard",
     isRecurring: false,
     category: "",
     notes: "",
@@ -132,6 +132,19 @@ function App(): React.JSX.Element {
     {},
   );
 
+  const groupByCategory = expenses.reduce<Record<string, number>>(
+    (acc: Record<string, number>, expense: Expense) => {
+      const { category, amount } = expense;
+
+      if (!acc[category]) {
+        acc[category] = 0;
+      }
+      acc[category] += Number(amount);
+      return acc;
+    },
+    {},
+  );
+
   useEffect(() => {
     localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
   }, [expenses]);
@@ -174,6 +187,7 @@ function App(): React.JSX.Element {
           <CategorySection
             getTotalsByCategory={calculateTotalsCategory}
             groupByMethod={groupByMethod}
+            groupByCategory={groupByCategory}
           />
           <RecentTransactions
             expenses={expenses}

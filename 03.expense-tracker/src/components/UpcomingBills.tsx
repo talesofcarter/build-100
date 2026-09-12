@@ -4,12 +4,18 @@ import { CreditCard, Inbox } from "lucide-react";
 
 interface UpcomingBillsProps {
   groupByMethod: Record<string, number>;
+  groupByCategory: Record<string, number>;
 }
 
 const UpcomingBills = ({
   groupByMethod,
+  groupByCategory,
 }: UpcomingBillsProps): React.JSX.Element => {
-  const groupedTotals = Object.entries(groupByMethod);
+  const groupedMethodTotals = Object.entries(groupByMethod);
+  const groupedCategoryTotals = Object.entries(groupByCategory);
+  const sortedEntries = [...groupedCategoryTotals]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3);
   return (
     <div>
       <div className="flex items-center justify-between mb-3.5">
@@ -19,25 +25,20 @@ const UpcomingBills = ({
         </a>
       </div>
       <div className="rounded-xl border border-[#E3E0D8] bg-white divide-y divide-[#EDEBE3]">
-        <BillRow name="Rent" date="Sep 15" amount="$1,250.00" tag="Housing" />
-        <BillRow
-          name="Car insurance"
-          date="Sep 18"
-          amount="$145.00"
-          tag="Insurance"
-        />
-        <BillRow
-          name="Internet"
-          date="Sep 20"
-          amount="$79.99"
-          tag="Utilities"
-        />
+        {sortedEntries.map(([category, totals]) => (
+          <BillRow
+            key={category}
+            name={category}
+            amount={`$${totals.toFixed(2)}`}
+            tag="Housing"
+          />
+        ))}
       </div>
 
       <div className="mt-4 rounded-xl border border-[#E3E0D8] bg-white p-4">
         <p className="text-[13px] font-medium mb-3">Payment methods</p>
         <div className="space-y-2.5">
-          {groupedTotals.length === 0 ? (
+          {groupedMethodTotals.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-2 py-6 text-center">
               <div className="flex h-9 w-9 items-center justify-center rounded bg-[#14171A]/10">
                 <Inbox size={14} className="text-[#9C9885]" />
@@ -47,7 +48,7 @@ const UpcomingBills = ({
               </span>
             </div>
           ) : (
-            groupedTotals.map(([paymentMethod, total]) => (
+            groupedMethodTotals.map(([paymentMethod, total]) => (
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-9 items-center justify-center rounded bg-[#14171A]">
                   <CreditCard size={13} className="text-white" />
