@@ -4,15 +4,17 @@ import UpcomingBills from "./UpcomingBills";
 
 interface CategorySectionProps {
   getTotalsByCategory: (category: string) => number;
+  groupByMethod: Record<string, number>;
 }
 
 const CategorySection = ({
   getTotalsByCategory,
+  groupByMethod,
 }: CategorySectionProps): React.JSX.Element => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <CategoryBreakdown getTotalsByCategory={getTotalsByCategory} />
-      <UpcomingBills />
+      <UpcomingBills groupByMethod={groupByMethod} />
     </div>
   );
 };

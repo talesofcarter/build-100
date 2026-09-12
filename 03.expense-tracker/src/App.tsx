@@ -119,6 +119,19 @@ function App(): React.JSX.Element {
     );
   };
 
+  const groupByMethod = expenses.reduce<Record<string, number>>(
+    (acc: Record<string, number>, expense: Expense) => {
+      const { paymentMethod, amount } = expense;
+
+      if (!acc[paymentMethod]) {
+        acc[paymentMethod] = 0;
+      }
+      acc[paymentMethod] += Number(amount);
+      return acc;
+    },
+    {},
+  );
+
   useEffect(() => {
     localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
   }, [expenses]);
@@ -158,7 +171,10 @@ function App(): React.JSX.Element {
             topCategory={findTopCategory}
           />
 
-          <CategorySection getTotalsByCategory={calculateTotalsCategory} />
+          <CategorySection
+            getTotalsByCategory={calculateTotalsCategory}
+            groupByMethod={groupByMethod}
+          />
           <RecentTransactions
             expenses={expenses}
             totals={calculateTotalExpenses}
