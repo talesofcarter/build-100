@@ -3,14 +3,18 @@ import { Plus } from "lucide-react";
 
 interface PageHeadingProps {
   onOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  userName: string;
 }
 
-const PageHeading = ({ onOpen }: PageHeadingProps): React.JSX.Element => {
+const PageHeading = ({
+  onOpen,
+  userName,
+}: PageHeadingProps): React.JSX.Element => {
   return (
     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
       <div>
         <h1 className="text-[26px] font-semibold tracking-[-0.01em] leading-tight">
-          Good afternoon, Kelvin
+          Good afternoon, {userName}
         </h1>
         <p className="text-[13.5px] text-[#7A776D] mt-1">
           Here's where your money went this month.

@@ -16,6 +16,7 @@ import {
 import { loadUser, saveUser, clearUser, getMemberSince } from "./utils/auth";
 import LoginPage from "./components/LoginPage";
 import { Toaster, toast } from "sonner";
+import NotificationBar from "./components/NotificationBar";
 
 const emptyForm: FormDataType = {
   amount: "0",
@@ -30,6 +31,9 @@ const emptyForm: FormDataType = {
 function App(): React.JSX.Element {
   const [userName, setUserName] = useState<string | null>(loadUser);
   const [expenses, setExpenses] = useState<Expense[]>(loadSavedExpenses);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openNotificationBar, setOpenNotificationBar] =
+    useState<boolean>(false);
   const [formData, setFormData] = useState<FormDataType>({
     amount: "0",
     merchant: "",
@@ -39,7 +43,6 @@ function App(): React.JSX.Element {
     category: "",
     notes: "",
   });
-  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleLogin = (name: string): void => {
     try {
@@ -175,7 +178,11 @@ function App(): React.JSX.Element {
         onLogout={handleLogout}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        <Topbar />
+        <Topbar
+          openBar={openNotificationBar}
+          onOpenBar={setOpenNotificationBar}
+        />
+
         {openModal && (
           <AddExpenseModal
             onClose={setOpenModal}
@@ -185,8 +192,8 @@ function App(): React.JSX.Element {
             onFormReset={resetForm}
           />
         )}
-        <main className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">
-          <PageHeading onOpen={setOpenModal} />
+        <div className="px-5 md:px-8 py-7 space-y-7 max-w-295 w-full">
+          <PageHeading onOpen={setOpenModal} userName={userName} />
           <MembershipCardHero
             totals={calculateTotalExpenses}
             transactionCount={expenses.length}
@@ -208,7 +215,7 @@ function App(): React.JSX.Element {
             totals={calculateTotalExpenses}
           />
           <div className="h-4" />
-        </main>
+        </div>
       </div>
     </main>
   );

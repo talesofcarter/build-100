@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", "sans-serif";
+  --font-sans: "Poppins", "sans-serif";
   --font-mono: "IBM Plex Mono", "monospace";
 }
 
 body {
-  font-family: "Inter", "sans-serif";
+  font-family: "Poppins", "sans-serif";
 }
 
 button,
 select,
-input, option {
+input,
+option {
   cursor: pointer;
 }
