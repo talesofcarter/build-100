@@ -13,7 +13,10 @@ const UpcomingBills = ({
 }: UpcomingBillsProps): React.JSX.Element => {
   const groupedMethodTotals = Object.entries(groupByMethod);
   const groupedCategoryTotals = Object.entries(groupByCategory);
-  const sortedEntries = [...groupedCategoryTotals]
+  const sortedMethodEntries = [...groupedMethodTotals]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3);
+  const sortedCategoryEntries = [...groupedCategoryTotals]
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3);
   return (
@@ -25,7 +28,7 @@ const UpcomingBills = ({
         </a>
       </div>
       <div className="rounded-xl border border-[#E3E0D8] bg-white divide-y divide-[#EDEBE3]">
-        {sortedEntries.map(([category, totals]) => (
+        {sortedCategoryEntries.map(([category, totals]) => (
           <BillRow
             key={category}
             name={category}
@@ -48,7 +51,7 @@ const UpcomingBills = ({
               </span>
             </div>
           ) : (
-            groupedMethodTotals.map(([paymentMethod, total]) => (
+            sortedMethodEntries.map(([paymentMethod, total]) => (
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-9 items-center justify-center rounded bg-[#14171A]">
                   <CreditCard size={13} className="text-white" />
