@@ -28,14 +28,24 @@ const UpcomingBills = ({
         </a>
       </div>
       <div className="rounded-xl border border-[#E3E0D8] bg-white divide-y divide-[#EDEBE3]">
-        {sortedCategoryEntries.map(([category, totals]) => (
-          <BillRow
-            key={category}
-            name={category}
-            amount={`$${totals.toFixed(2)}`}
-            tag="Housing"
-          />
-        ))}
+        {groupedCategoryTotals.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-2 py-6 text-center">
+            <div className="flex h-9 w-9 items-center justify-center rounded bg-[#14171A]/10">
+              <Inbox size={14} className="text-[#9C9885]" />
+            </div>
+            <span className="text-[12px] font-mono text-[#9C9885]">
+              No transactions yet
+            </span>
+          </div>
+        ) : (
+          sortedCategoryEntries.map(([category, totals]) => (
+            <BillRow
+              key={category}
+              name={category}
+              amount={`$${totals.toFixed(2)}`}
+            />
+          ))
+        )}
       </div>
 
       <div className="mt-4 rounded-xl border border-[#E3E0D8] bg-white p-4">
